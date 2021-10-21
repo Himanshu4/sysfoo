@@ -58,6 +58,9 @@ pipeline {
             }
 
           }
+	  when {
+		branch 'master'
+	  }
         }
 
       }
