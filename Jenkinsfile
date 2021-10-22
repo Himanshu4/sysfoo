@@ -47,6 +47,10 @@ pipeline {
         }
 
         stage('DockerBnP') {
+          agent any
+          when {
+            branch 'master'
+          }
           steps {
             script {
               docker.withRegistry('https://index.docker.io/v1/', 'dockerlogin') {
@@ -58,25 +62,22 @@ pipeline {
             }
 
           }
-	  when {
-		branch 'master'
-	  }
         }
 
       }
     }
 
     stage('Deploy to Dev') {
- when {
- beforeAgent true
- branch 'master'
- }
- agent any
- steps {
- echo 'Deploying to Dev Environment with Docker Compose'
- sh 'docker-compose up -d'
- }
- }
+      agent any
+      when {
+        beforeAgent true
+        branch 'master'
+      }
+      steps {
+        echo 'Deploying to Dev Environment with Docker Compose'
+        sh 'docker-compose up -d'
+      }
+    }
 
   }
   tools {
